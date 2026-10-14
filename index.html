@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mate0s</title>
+<meta name="description" content="Mi código funciona en mi máquina. Lo demás no es mi problema. Humor negro de programación en vídeos cortos, con proyectos open source de verdad.">
+<meta property="og:title" content="mate0s">
+<meta property="og:description" content="Tecnología, caos y poca fe en la humanidad, en vídeos cortos.">
+<style>
+  :root { --bg:#070b10; --fg:#d7e3f4; --mut:#7d8ea5; --acc:#39ff88; --acc2:#2de2e6; --card:#0f1620; --line:#1f2d40; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background-image:linear-gradient(rgba(57,255,136,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,136,.04) 1px, transparent 1px); background-size:24px 24px; }
+  a { color:var(--acc); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 20px; }
+  nav { display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
+  nav b { color:var(--acc); letter-spacing:1px; }
+  nav a { margin-left:18px; color:var(--mut); font-size:14px; }
+  .hero { padding:72px 0 56px; }
+  .tag { display:inline-block; border:1px solid var(--line); background:var(--card); padding:4px 10px; font-size:12px; color:var(--mut); margin-bottom:20px; }
+  h1 { font-size:clamp(40px, 9vw, 76px); line-height:1.05; margin:0 0 16px; }
+  h1 span { color:var(--acc); }
+  .lead { font-size:19px; color:var(--mut); max-width:620px; }
+  .btns { margin-top:28px; display:flex; flex-wrap:wrap; gap:12px; }
+  .btn { padding:12px 18px; border:1px solid var(--acc); color:#04120a; background:var(--acc); font-weight:700; }
+  .btn.ghost { background:transparent; color:var(--acc); }
+  .btn:hover { text-decoration:none; filter:brightness(1.1); }
+  h2 { font-size:14px; letter-spacing:2px; text-transform:uppercase; color:var(--mut); margin:56px 0 16px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); padding:18px; display:block; color:var(--fg); }
+  .card:hover { border-color:var(--acc); text-decoration:none; }
+  .card h3 { margin:0 0 6px; color:var(--acc2); font-size:17px; }
+  .card p { margin:0; color:var(--mut); font-size:14px; }
+  .term { background:#05080c; border:1px solid var(--line); padding:18px; font-size:14px; overflow-x:auto; }
+  .term .p { color:var(--acc); }
+  .term .e { color:#ff5f6d; }
+  footer { margin:72px 0 40px; color:var(--mut); font-size:13px; border-top:1px solid var(--line); padding-top:20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <b>mate0s_</b>
+    <div><a href="#proyectos">proyectos</a><a href="https://youtube.com/@mate0s-dev91">youtube</a><a href="https://github.com/cmate0s">github</a></div>
+  </nav>
+
+  <section class="hero">
+    <span class="tag">estado: en producción un viernes a las 17:59</span>
+    <h1>Mi código funciona<br>en <span>mi máquina</span>.</h1>
+    <p class="lead">Lo demás no es mi problema. Tecnología, caos y poca fe en la humanidad, en vídeos cortos. Un personaje de píxeles con proyectos de verdad: todo lo que sale en los vídeos existe y puedes usarlo.</p>
+    <div class="btns">
+      <a class="btn" href="https://youtube.com/@mate0s-dev91">Ver los Shorts</a>
+      <a class="btn ghost" href="https://excusa-como-servicio.vercel.app">Probar la demo</a>
+    </div>
+  </section>
+
+  <section id="proyectos">
+    <h2>Proyectos reales</h2>
+    <div class="grid">
+      <a class="card" href="https://excusa-como-servicio.vercel.app">
+        <h3>excusa-como-servicio</h3>
+        <p>Una GitHub Action que comenta en tu PR una excusa a medida cuando falla el CI, y lo cierra como "no reproducible".</p>
+      </a>
+      <a class="card" href="https://github.com/cmate0s/excusa-como-servicio">
+        <h3>Código abierto</h3>
+        <p>Repo con la Action, 57 excusas en 8 categorías y la demo. Pull requests con más humor negro, bienvenidas.</p>
+      </a>
+      <a class="card" href="https://youtube.com/@mate0s-dev91">
+        <h3>El canal</h3>
+        <p>Cada Short sale de un proyecto real o de una mala decisión técnica. Normalmente ambas.</p>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Último incidente</h2>
+    <div class="term">
+      <div><span class="p">$</span> git push origin main</div>
+      <div><span class="e">✖ 14 tests failed</span></div>
+      <div><span class="p">bot&gt;</span> "El objeto es null porque decidió no existir. Respetamos su decisión."</div>
+      <div><span class="p">bot&gt;</span> Estado: no reproducible.</div>
+    </div>
+  </section>
+
+  <footer>© mate0s · Sevilla · Sin garantías, sin soporte, sin remordimientos.</footer>
+</div>
+</body>
+</html>
