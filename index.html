@@ -37,6 +37,9 @@
   .term .p { color:var(--acc); }
   .term .e { color:#ff5f6d; }
   footer { margin:72px 0 40px; color:var(--mut); font-size:13px; border-top:1px solid var(--line); padding-top:20px; }
+  .cur { display:inline-block; width:9px; height:1em; background:var(--acc); vertical-align:-2px; animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  @media (prefers-reduced-motion:reduce) { .cur { animation:none; } }
   .hero-img { width:128px; height:128px; image-rendering:pixelated; border:2px solid var(--acc); display:block; margin-bottom:20px; }
 </style>
 </head>
@@ -83,6 +86,9 @@
       <div><span class="e">✖ 14 tests failed</span></div>
       <div><span class="p">bot&gt;</span> "El objeto es null porque decidió no existir. Respetamos su decisión."</div>
       <div><span class="p">bot&gt;</span> Estado: no reproducible.</div>
+      <div><span class="p">$</span> git blame<span class="cur"></span></div>
+      <div><span class="e">✖ el culpable eres tú, de hace 3 años</span></div>
+      <div><span class="p">bot&gt;</span> Pero él ya no trabaja aquí. Caso cerrado.</div>
     </div>
   </section>
 
