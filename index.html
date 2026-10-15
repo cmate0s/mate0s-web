@@ -41,6 +41,11 @@
   @keyframes blink { 50% { opacity:0; } }
   @media (prefers-reduced-motion:reduce) { .cur { animation:none; } }
   .hero-img { width:128px; height:128px; image-rendering:pixelated; border:2px solid var(--acc); display:block; margin-bottom:20px; }
+  .excusa { border:1px dashed var(--acc); background:var(--card); padding:18px; }
+  .excusa small { color:var(--mut); display:block; margin-bottom:8px; }
+  .excusa q { color:var(--fg); font-size:18px; quotes:none; }
+  .excusa q::before { content:"“"; color:var(--acc); }
+  .excusa q::after { content:"”"; color:var(--acc); }
 </style>
 </head>
 <body>
@@ -92,7 +97,23 @@
     </div>
   </section>
 
+  <section>
+    <h2>Excusa del día</h2>
+    <div class="excusa">
+      <small id="ex-fecha">$ ./excusa --hoy</small>
+      <q id="ex-txt">Cargando una mentira convincente...</q>
+    </div>
+  </section>
+
   <footer>© mate0s · Sevilla · Sin garantías, sin soporte, sin remordimientos.</footer>
 </div>
+<script>
+(function(){
+  var ex=["En producción no pasa, así que no es producción.","Eso es una característica que todavía no hemos documentado.","El test es el que está mal. Lo escribí yo hace meses, no me juzgues.","Funcionaba ayer. Hoy la luna está en una fase incompatible con tu PR.","La culpa es de la caché. Siempre es de la caché. Hasta cuando no hay caché.","Lo arreglé en local. El local es un estado de ánimo.","No es un bug, es deuda técnica con vida propia.","El servidor se ha ido a buscarse a sí mismo. Volverá más maduro.","Eso lo escribió una IA. Yo solo le di a aceptar con fe.","Anoche lo vi funcionar. Fue un espejismo, lo sé."];
+  var d=new Date(), n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);
+  document.getElementById('ex-txt').textContent=ex[n%ex.length];
+  document.getElementById('ex-fecha').textContent='$ ./excusa --hoy  # '+d.toISOString().slice(0,10);
+})();
+</script>
 </body>
 </html>
