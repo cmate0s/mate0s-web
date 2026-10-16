@@ -46,6 +46,14 @@
   .excusa q { color:var(--fg); font-size:18px; quotes:none; }
   .excusa q::before { content:"“"; color:var(--acc); }
   .excusa q::after { content:"”"; color:var(--acc); }
+  body { overflow-x:clip; }
+  .pet { position:absolute; left:0; top:0; width:0; height:0; z-index:50; pointer-events:none; will-change:transform; }
+  .pet-sprite { position:absolute; left:-36px; top:-112px; width:72px; height:112px; background-size:288px 112px; background-repeat:no-repeat; transform-origin:50% 100%; pointer-events:auto; cursor:pointer; }
+  .pet-bubble { position:absolute; left:0; top:-142px; width:max-content; max-width:200px; transform:translateX(calc(-50% + var(--dx, 0px))); background:var(--card); border:1px solid var(--acc); color:var(--fg); font-size:12px; line-height:1.4; padding:4px 8px; text-align:center; opacity:0; transition:opacity .2s; pointer-events:none; }
+  .pet-bubble.show { opacity:1; }
+  .pc { transition:opacity .25s, color .25s, text-shadow .25s; }
+  .pc.off { opacity:0; }
+  .pc.shine { color:#fff; text-shadow:0 0 10px var(--acc); }
 </style>
 </head>
 <body>
@@ -115,5 +123,6 @@
   document.getElementById('ex-fecha').textContent='$ ./excusa --hoy  # '+d.toISOString().slice(0,10);
 })();
 </script>
+<script src="pet.js"></script>
 </body>
 </html>
