@@ -1,9 +1,12 @@
 // mate0s asomado al marco como a una ventana: de base se queda apoyado y de vez en
 // cuando hace algo (saluda, se toma el café, bosteza, se duerme...). Todos los clips
 // empiezan y acaban en la misma pose, así que se encadenan sin saltos.
+// Con "reducir movimiento" no hay bucle ni animaciones al azar: se queda quieto y
+// solo reacciona cuando el visitante pasa el ratón o hace clic.
 (() => {
   const box = document.querySelector('.hero-img');
-  if (!box || matchMedia('(prefers-reduced-motion: reduce)').matches) return;   // se queda la foto fija
+  if (!box) return;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const BASE = 'apoyado';
   // peso para elegir al azar + frases que a veces suelta mientras lo hace
@@ -56,11 +59,12 @@
     prev.classList.remove('on');
     prev.pause();
     current = name;
+    if (reduced && name === BASE) next.pause();     // vuelve a quedarse quieto en el primer fotograma
   }
 
   async function playExtra(name, text) {
     const v = vids[name];
-    if (busy || !visible || v.readyState < 3) return false;
+    if (busy || !visible || v.readyState < 3 || box.classList.contains('empty')) return false;
     busy = true;
     lastExtra = performance.now();
     last = name;
@@ -85,8 +89,12 @@
   }
 
   // el base arranca ya; el resto se descarga cuando el navegador está tranquilo
-  vids[BASE].loop = true;
-  vids[BASE].play().then(() => vids[BASE].classList.add('on')).catch(() => {});
+  if (reduced) {
+    vids[BASE].addEventListener('loadeddata', () => vids[BASE].classList.add('on'), { once: true });
+  } else {
+    vids[BASE].loop = true;
+    vids[BASE].play().then(() => vids[BASE].classList.add('on')).catch(() => {});
+  }
   const preloadRest = () => Object.values(vids).forEach(v => { if (v.preload === 'none') { v.preload = 'auto'; v.load(); } });
   const later = () => setTimeout(() => (window.requestIdleCallback ? requestIdleCallback(preloadRest) : preloadRest()), 1200);
   document.readyState === 'complete' ? later() : addEventListener('load', later);
@@ -103,12 +111,12 @@
   // sin gastar CPU fuera de pantalla o con la pestaña oculta
   new IntersectionObserver(([e]) => {
     visible = e.isIntersecting;
-    if (!busy) visible ? vids[current].play().catch(() => {}) : vids[current].pause();
+    if (!busy && !reduced) visible ? vids[current].play().catch(() => {}) : vids[current].pause();
   }).observe(box);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) vids[current].pause();
-    else if (visible) vids[current].play().catch(() => {});
+    else if (visible && !reduced) vids[current].play().catch(() => {});
   });
 
-  schedule();
+  if (!reduced) schedule();
 })();
