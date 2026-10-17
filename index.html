@@ -54,6 +54,12 @@
   .pc { transition:opacity .25s, color .25s, text-shadow .25s; }
   .pc.off { opacity:0; }
   .pc.shine { color:#fff; text-shadow:0 0 10px var(--acc); }
+  .deuda { border:1px solid var(--line); background:var(--card); padding:18px; }
+  .deuda .n { font-size:clamp(28px,7vw,44px); color:var(--acc); font-weight:700; }
+  .deuda small { color:var(--mut); display:block; }
+  .deuda .bar { height:6px; background:#05080c; border:1px solid var(--line); margin:12px 0 8px; }
+  .deuda .bar i { display:block; height:100%; width:0; background:var(--acc); transition:width .4s; }
+  .deuda .bar i.hot { background:#ff5f6d; }
 </style>
 </head>
 <body>
@@ -117,6 +123,16 @@
     </div>
   </section>
 
+  <section>
+    <h2>Deuda técnica en vivo</h2>
+    <div class="deuda">
+      <small>Acumulada desde que abriste esta página</small>
+      <div class="n"><span id="dt-n">0</span> líneas de "ya lo arreglaré"</div>
+      <div class="bar"><i id="dt-b"></i></div>
+      <small id="dt-t">Todo bajo control. Mentira, pero tranquiliza.</small>
+    </div>
+  </section>
+
   <footer>© mate0s · Sevilla · Sin garantías, sin soporte, sin remordimientos.</footer>
 </div>
 <script>
@@ -125,6 +141,20 @@
   var d=new Date(), n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);
   document.getElementById('ex-txt').textContent=ex[n%ex.length];
   document.getElementById('ex-fecha').textContent='$ ./excusa --hoy  # '+d.toISOString().slice(0,10);
+})();
+</script>
+<script>
+(function(){
+  var n=0,el=document.getElementById('dt-n'),b=document.getElementById('dt-b'),t=document.getElementById('dt-t');
+  var msg=[[0,"Todo bajo control. Mentira, pero tranquiliza."],[40,"Aparece un TODO que dice \"temporal\". Es de 2021."],[100,"Alguien ha copiado de Stack Overflow sin leer la respuesta."],[200,"La IA ha escrito algo y nadie sabe por qué compila."],[350,"Refactor aplazado a \"el próximo sprint\". Otra vez."],[500,"Esto ya no es deuda, es hipoteca. Y el banco eres tú."]];
+  setInterval(function(){
+    n+=Math.ceil(Math.random()*3);
+    el.textContent=n;
+    var p=Math.min(100,n/5);
+    b.style.width=p+'%';
+    b.className=p>=70?'hot':'';
+    for(var i=msg.length-1;i>=0;i--){ if(n>=msg[i][0]){ t.textContent=msg[i][1]; break; } }
+  },700);
 })();
 </script>
 <script src="pet.js"></script>
