@@ -1,0 +1,47 @@
+# Material de trabajo (vídeos, banners, ediciones, Google Flow): pesado y no forma parte de la web
+perfil/
+material_gflow/
+
+# Claude Code: config local y sesiones
+.claude/
+CLAUDE.local.md
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+.directory
+*~
+
+# Editores / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencias y builds (por si la web crece)
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.vercel/
+.netlify/
+
+# Secretos y entornos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Temporales y backups
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
