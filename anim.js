@@ -119,4 +119,10 @@
   });
 
   if (!reduced) schedule();
+
+  // cuando el personaje sale a pasear por la página, el marco se queda solo con el fondo
+  document.addEventListener('pet:leave', () => {
+    busy = true;
+    Object.values(vids).forEach(v => v.pause());
+  });
 })();
