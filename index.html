@@ -42,6 +42,8 @@
   @media (prefers-reduced-motion:reduce) { .cur { animation:none; } }
   .hero-img { position:relative; width:128px; height:128px; border:2px solid var(--acc); background:#000; margin-bottom:28px; cursor:pointer; }
   .hero-img img, .hero-img video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .hero-img .who { transition:opacity .4s steps(5); }
+  .hero-img.empty .who, .hero-img.empty video { opacity:0; }
   .hero-img video { opacity:0; }
   .hero-img video.on { opacity:1; }
   .hero-img::after { content:""; position:absolute; left:-8px; right:-8px; bottom:-10px; height:8px; background:var(--card); border:1px solid var(--acc); box-shadow:0 4px 0 rgba(0,0,0,.45); }
@@ -76,7 +78,7 @@
   </nav>
 
   <section class="hero">
-    <div class="hero-img" role="img" aria-label="mate0s, el personaje de píxeles, asomado al marco"><img src="mate0s-perfil.jpg" alt="" width="128" height="128"></div>
+    <div class="hero-img" role="img" aria-label="mate0s, el personaje de píxeles, asomado al marco"><img class="bg" src="mate0s-fondo.jpg" alt="" width="128" height="128"><img class="who" src="mate0s-perfil.jpg" alt="" width="128" height="128"></div>
     <span class="tag">estado: en producción un viernes a las 17:59</span>
     <h1>Mi código funciona<br>en <span>mi máquina</span>.</h1>
     <p class="lead">Lo demás no es mi problema. Tecnología, caos y poca fe en la humanidad, en vídeos cortos. Un personaje de píxeles con proyectos de verdad: todo lo que sale en los vídeos existe y puedes usarlo.</p>

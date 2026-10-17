@@ -457,13 +457,18 @@
   }))).then(() => setTimeout(main, 800));
 
   // Con "reducir movimiento" no arranca solo: se ofrece como opción en el footer.
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches && !new URLSearchParams(location.search).has('pet')) {
-    const link = document.createElement('a');
-    link.href = '#';
-    link.textContent = 'animar al personaje';
-    link.addEventListener('click', e => { e.preventDefault(); link.remove(); start(); });
-    document.querySelector('footer').append(' · ', link);
-    return;
+  // Al animarlo sale del retrato y se queda solo el fondo de matrix.
+  const leaveFrame = () => document.querySelector('.hero-img')?.classList.add('empty');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (new URLSearchParams(location.search).has('pet')) leaveFrame();
+    else {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.textContent = 'animar al personaje';
+      link.addEventListener('click', e => { e.preventDefault(); link.remove(); leaveFrame(); start(); });
+      document.querySelector('footer').append(' · ', link);
+      return;
+    }
   }
   start();
 })();
