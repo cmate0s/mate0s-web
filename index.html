@@ -33,6 +33,8 @@
   .card:hover { border-color:var(--acc); text-decoration:none; }
   .card h3 { margin:0 0 6px; color:var(--acc2); font-size:17px; }
   .card p { margin:0; color:var(--mut); font-size:14px; }
+  .apk { display:inline-block; margin-top:12px; padding:8px 12px; border:1px solid var(--line); background:#05080c; color:var(--mut); font-size:13px; }
+  .apk:hover, .apk:focus-visible { border-color:var(--acc); color:var(--acc); text-decoration:none; outline:none; }
   .term { background:#05080c; border:1px solid var(--line); padding:18px; font-size:14px; overflow-x:auto; }
   .term .p { color:var(--acc); }
   .term .e { color:#ff5f6d; }
@@ -101,7 +103,8 @@
       </a>
       <a class="card" href="https://modelito-woad.vercel.app">
         <h3>modelito</h3>
-        <p>Diario de outfits que recuerda qué te pusiste cuando hacía el mismo tiempo. Una PWA que hice para mi hermana: primera versión en 10 minutos, bonita en 40.</p>
+        <p>Diario de outfits que recuerda qué te pusiste cuando hacía el mismo tiempo. Una PWA que hice para mi hermana: primera versión en 10 minutos, bonita en 40. Ahora también app nativa para Android.</p>
+        <span class="apk" role="button" tabindex="0" data-href="https://github.com/cmate0s/modelito/releases/latest">↓ Descargar la APK</span>
       </a>
       <a class="card" href="https://youtube.com/@mate0s-dev91">
         <h3>El canal</h3>
@@ -167,5 +170,16 @@
 </script>
 <script src="anim.js"></script>
 <script src="pet.js"></script>
+<script>
+(function(){
+  // El botón APK vive dentro del enlace de la tarjeta: captura el clic (y
+  // teclado) y abre GitHub Releases sin navegar a la PWA.
+  document.querySelectorAll('.apk').forEach(function(el){
+    function go(e){ e.preventDefault(); e.stopPropagation(); window.open(el.dataset.href, '_blank', 'noopener'); }
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ go(e); } });
+  });
+})();
+</script>
 </body>
 </html>
