@@ -1,185 +1,332 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>mate0s</title>
-<meta name="description" content="Mi código funciona en mi máquina. Lo demás no es mi problema. Humor negro de programación en vídeos cortos, con proyectos open source de verdad.">
-<meta property="og:title" content="mate0s">
-<meta property="og:description" content="Tecnología, caos y poca fe en la humanidad, en vídeos cortos.">
-<style>
-  :root { --bg:#070b10; --fg:#d7e3f4; --mut:#7d8ea5; --acc:#39ff88; --acc2:#2de2e6; --card:#0f1620; --line:#1f2d40; }
-  * { box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background-image:linear-gradient(rgba(57,255,136,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,136,.04) 1px, transparent 1px); background-size:24px 24px; }
-  a { color:var(--acc); text-decoration:none; }
-  a:hover { text-decoration:underline; }
-  .wrap { max-width:860px; margin:0 auto; padding:0 20px; }
-  nav { display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
-  nav b { color:var(--acc); letter-spacing:1px; }
-  nav a { margin-left:18px; color:var(--mut); font-size:14px; }
-  .hero { padding:72px 0 56px; }
-  .tag { display:inline-block; border:1px solid var(--line); background:var(--card); padding:4px 10px; font-size:12px; color:var(--mut); margin-bottom:20px; }
-  h1 { font-size:clamp(40px, 9vw, 76px); line-height:1.05; margin:0 0 16px; }
-  h1 span { color:var(--acc); }
-  .lead { font-size:19px; color:var(--mut); max-width:620px; }
-  .btns { margin-top:28px; display:flex; flex-wrap:wrap; gap:12px; }
-  .btn { padding:12px 18px; border:1px solid var(--acc); color:#04120a; background:var(--acc); font-weight:700; }
-  .btn.ghost { background:transparent; color:var(--acc); }
-  .btn:hover { text-decoration:none; filter:brightness(1.1); }
-  h2 { font-size:14px; letter-spacing:2px; text-transform:uppercase; color:var(--mut); margin:56px 0 16px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; }
-  .card { background:var(--card); border:1px solid var(--line); padding:18px; display:block; color:var(--fg); }
-  .card:hover { border-color:var(--acc); text-decoration:none; }
-  .card h3 { margin:0 0 6px; color:var(--acc2); font-size:17px; }
-  .card p { margin:0; color:var(--mut); font-size:14px; }
-  .apk { display:inline-block; margin-top:12px; padding:8px 12px; border:1px solid var(--line); background:#05080c; color:var(--mut); font-size:13px; }
-  .apk:hover, .apk:focus-visible { border-color:var(--acc); color:var(--acc); text-decoration:none; outline:none; }
-  .term { background:#05080c; border:1px solid var(--line); padding:18px; font-size:14px; overflow-x:auto; }
-  .term .p { color:var(--acc); }
-  .term .e { color:#ff5f6d; }
-  footer { margin:72px 0 40px; color:var(--mut); font-size:13px; border-top:1px solid var(--line); padding-top:20px; }
-  .cur { display:inline-block; width:9px; height:1em; background:var(--acc); vertical-align:-2px; animation:blink 1s steps(1) infinite; }
-  @keyframes blink { 50% { opacity:0; } }
-  @media (prefers-reduced-motion:reduce) { .cur { animation:none; } }
-  .hero-img { position:relative; width:128px; height:128px; border:2px solid var(--acc); background:#000; margin-bottom:28px; cursor:pointer; }
-  .hero-img img, .hero-img video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
-  .hero-img .who { transition:opacity .4s steps(5); }
-  .hero-img video { opacity:0; }
-  .hero-img video.on { opacity:1; }
-  .hero-img.empty .who, .hero-img.empty video.on { opacity:0; }
-  .hero-img::after { content:""; position:absolute; left:-8px; right:-8px; bottom:-10px; height:8px; background:var(--card); border:1px solid var(--acc); box-shadow:0 4px 0 rgba(0,0,0,.45); }
-  .hero-bubble { position:absolute; left:calc(100% + 18px); top:6px; width:max-content; max-width:190px; padding:6px 10px; font-size:12px; line-height:1.4; color:var(--fg); background:var(--card); border:1px solid var(--acc); opacity:0; transform:translateY(4px); transition:opacity .2s, transform .2s; pointer-events:none; z-index:2; }
-  .hero-bubble.show { opacity:1; transform:none; }
-  .excusa { border:1px dashed var(--acc); background:var(--card); padding:18px; }
-  .excusa small { color:var(--mut); display:block; margin-bottom:8px; }
-  .excusa q { color:var(--fg); font-size:18px; quotes:none; }
-  .excusa q::before { content:"“"; color:var(--acc); }
-  .excusa q::after { content:"”"; color:var(--acc); }
-  body { overflow-x:clip; }
-  .pet { position:absolute; left:0; top:0; width:0; height:0; z-index:50; pointer-events:none; will-change:transform; }
-  .pet-sprite { position:absolute; left:-36px; top:-112px; width:72px; height:112px; background-size:288px 112px; background-repeat:no-repeat; transform-origin:50% 100%; pointer-events:auto; cursor:pointer; }
-  .pet-bubble { position:absolute; left:0; top:-142px; width:max-content; max-width:200px; transform:translateX(calc(-50% + var(--dx, 0px))); background:var(--card); border:1px solid var(--acc); color:var(--fg); font-size:12px; line-height:1.4; padding:4px 8px; text-align:center; opacity:0; transition:opacity .2s; pointer-events:none; }
-  .pet-bubble.show { opacity:1; }
-  .pc { transition:opacity .25s, color .25s, text-shadow .25s; }
-  .pc.off { opacity:0; }
-  .pc.shine { color:#fff; text-shadow:0 0 10px var(--acc); }
-  .deuda { border:1px solid var(--line); background:var(--card); padding:18px; }
-  .deuda .n { font-size:clamp(28px,7vw,44px); color:var(--acc); font-weight:700; }
-  .deuda small { color:var(--mut); display:block; }
-  .deuda .bar { height:6px; background:#05080c; border:1px solid var(--line); margin:12px 0 8px; }
-  .deuda .bar i { display:block; height:100%; width:0; background:var(--acc); transition:width .4s; }
-  .deuda .bar i.hot { background:#ff5f6d; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Carlos Mateos · Desarrollador de aplicaciones multiplataforma</title>
+  <meta name="description" content="Carlos Mateos, desarrollador de aplicaciones multiplataforma en Sevilla: media jornada en Kometasoft, NeumorStudio con un compañero y un laboratorio de proyectos open source con algún despropósito.">
+  <meta name="author" content="Carlos Mateos">
+
+  <!-- TODO-CARLOS: si cambias de dominio, actualiza canonical, og:url y og:image -->
+  <link rel="canonical" href="https://mate0s-web.vercel.app/">
+  <meta property="og:url" content="https://mate0s-web.vercel.app/">
+  <meta property="og:title" content="Carlos Mateos · Desarrollador de aplicaciones multiplataforma">
+  <meta property="og:description" content="Media jornada en Kometasoft, NeumorStudio con un compañero y un laboratorio propio de open source. Sevilla.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://mate0s-web.vercel.app/assets/img/carlos-mateos.jpeg">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <meta name="theme-color" content="#faf6f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#171412" media="(prefers-color-scheme: dark)">
+
+  <link rel="stylesheet" href="assets/css/lenis.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-<div class="wrap">
-  <nav>
-    <b>mate0s_</b>
-    <div><a href="#proyectos">proyectos</a><a href="https://youtube.com/@mate0s-dev91">youtube</a><a href="https://github.com/cmate0s">github</a></div>
-  </nav>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-  <section class="hero">
-    <div class="hero-img" role="img" aria-label="mate0s, el personaje de píxeles, asomado al marco"><img class="bg" src="mate0s-fondo.jpg" alt="" width="128" height="128"><img class="who" src="mate0s-perfil.jpg" alt="" width="128" height="128"></div>
-    <span class="tag">estado: en producción un viernes a las 17:59</span>
-    <h1>Mi código funciona<br>en <span>mi máquina</span>.</h1>
-    <p class="lead">Lo demás no es mi problema. Tecnología, caos y poca fe en la humanidad, en vídeos cortos. Un personaje de píxeles con proyectos de verdad: todo lo que sale en los vídeos existe y puedes usarlo.</p>
-    <div class="btns">
-      <a class="btn" href="https://youtube.com/@mate0s-dev91">Ver los Shorts</a>
-      <a class="btn ghost" href="https://excusa-como-servicio.vercel.app">Probar la demo</a>
+  <header class="barra">
+    <nav class="nav" aria-label="Principal">
+      <a class="marca" href="#inicio">carlos mateos<span class="marca-punto">.</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu">
+        <span class="sr-only">Menú</span>
+        <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false">
+          <path d="M2 5.5h16M2 10h16M2 14.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <ul class="menu" id="menu">
+        <li><a class="nav-link" href="#ahora">Ahora</a></li>
+        <li><a class="nav-link" href="#historia">Historia</a></li>
+        <li><a class="nav-link" href="#trabajo">Trabajo</a></li>
+        <li><a class="nav-link" href="#lab">Laboratorio</a></li>
+        <li><a class="nav-link" href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="contenido">
+
+    <!-- Portada -->
+    <section class="hero" id="inicio">
+      <div class="envoltura hero-grid">
+        <div class="hero-texto">
+          <p class="mango reveal">
+            <span class="mango-prompt">carlos@sevilla:~$</span>
+            hola, soy<span class="cursor" aria-hidden="true"></span>
+          </p>
+          <h1 class="reveal">Carlos Mateos<span class="marca-punto">.</span></h1>
+          <p class="hero-sub reveal">
+            Desarrollador de aplicaciones multiplataforma desde 2023. Media jornada
+            en <strong>Kometasoft</strong>, NeumorStudio en paralelo con el compañero
+            del título —y la pestaña eterna de tecnologías nuevas por investigar.
+          </p>
+          <div class="hero-botones reveal">
+            <a class="btn btn-primario" href="#contacto">Escríbeme</a>
+            <a class="btn btn-flecha" href="#trabajo">Ver mi trabajo
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="hero-foto reveal">
+          <img class="foto-principal" src="assets/img/carlos-mateos.jpeg" alt="Retrato en blanco y negro de Carlos Mateos, sonriendo, con el pelo rizado y barba" width="400" height="400" loading="eager" fetchpriority="high">
+        </div>
+      </div>
+    </section>
+
+    <!-- Ahora -->
+    <section class="seccion seccion-ahora" id="ahora">
+      <div class="envoltura">
+        <h2 class="sr-only">Qué estoy haciendo ahora</h2>
+        <div class="terminal reveal">
+          <div class="terminal-barra" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p class="terminal-linea">
+            <span class="terminal-prompt">carlos@sevilla:~$</span>
+            ahora<span class="cursor" aria-hidden="true"></span>
+          </p>
+          <dl class="terminal-cuerpo">
+            <div class="terminal-fila">
+              <dt>kometasoft</dt>
+              <dd>Segunda etapa en marcha — PHP, JS, MySQL y Flutter.</dd>
+            </div>
+            <div class="terminal-fila">
+              <dt>neumorstudio</dt>
+              <dd>Salonio en producción · y explorando Flutter.</dd>
+            </div>
+            <div class="terminal-fila">
+              <dt>herramientas</dt>
+              <dd>Claude Code y OpenCode: hoy orquesto más de lo que tecleo.</dd>
+            </div>
+            <div class="terminal-fila">
+              <dt>curiosidad</dt>
+              <dd>La pestaña de siempre: la próxima tecnología por investigar.</dd>
+            </div>
+          </dl>
+          <p class="terminal-pie">— actualizado en noviembre de 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Historia -->
+    <section class="seccion" id="historia">
+      <div class="envoltura">
+        <p class="antetitulo reveal">Historia</p>
+        <h2 class="reveal">Motor de dos tiempos<span class="marca-punto">.</span></h2>
+        <div class="seccion-texto">
+          <p class="reveal">
+            En 2023 me saqué el título de DAM en Sevilla y desde entonces las horas
+            se reparten entre dos fichajes: <strong>Kometasoft</strong>, empresa de
+            ingeniería de software donde llevo dieciocho meses sumados en dos etapas
+            de nueve —me llamaron otra vez, y volver suele ser buena señal—, y
+            <strong>NeumorStudio</strong>, el estudio que monté con el compañero con
+            el que me saqué el título.
+          </p>
+          <p class="reveal">
+            En NeumorStudio somos dos. Construímos webs y apps a medida para negocios
+            que pierden horas haciendo las cosas a mano —reservas, paneles,
+            automatización—, entregadas funcionando y mantenidas después. Ahí ya no
+            tecleo tanto como dirijo: <strong>Claude Code</strong> y
+            <strong>OpenCode</strong> son herramientas de cada día, y el resultado se
+            juzga en producción, no en demos.
+          </p>
+        </div>
+        <div class="aficiones reveal">
+          <h3>Fuera del teclado</h3>
+          <ul class="chips" aria-label="Aficiones">
+            <li class="chip"><span aria-hidden="true">🏍️</span> Moto — para despejar y para las curvas</li>
+            <li class="chip"><span aria-hidden="true">🎮</span> Videojuegos</li>
+            <li class="chip"><span aria-hidden="true">🔭</span> Tecnologías nuevas por investigar</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trabajo -->
+    <section class="seccion" id="trabajo">
+      <div class="envoltura">
+        <p class="antetitulo reveal">Trabajo</p>
+        <h2 class="reveal">Dos sitios, una misma forma de trabajar<span class="marca-punto">.</span></h2>
+        <div class="tarjetas">
+          <article class="tarjeta reveal">
+            <div class="tarjeta-cabecera">
+              <h3>Kometasoft</h3>
+              <p class="tarjeta-rol">Desarrollador · 18 meses en dos etapas</p>
+            </div>
+            <p class="tarjeta-texto">
+              Ingeniería de software seria: agentes de IA supervisados, plataformas
+              críticas y automatización en producción. Dos etapas de nueve meses
+              —me llamaron otra vez— y el tipo de trabajo que no admite demos a medias.
+            </p>
+            <ul class="tags" aria-label="Stack en Kometasoft">
+              <li>PHP</li>
+              <li>JavaScript</li>
+              <li>HTML</li>
+              <li>MySQL</li>
+              <li>Flutter</li>
+            </ul>
+            <a class="btn btn-flecha" href="https://kometasoft.com/es/" target="_blank" rel="noopener">kometasoft.com
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="tarjeta reveal">
+            <div class="tarjeta-cabecera">
+              <h3>NeumorStudio</h3>
+              <p class="tarjeta-rol">Cofundador · desde hace un año</p>
+            </div>
+            <p class="tarjeta-texto">
+              Somos dos: el compañero del título y yo. Webs y apps a medida para
+              negocios locales que pierden horas a mano —reservas, paneles,
+              automatización—, entregadas funcionando y mantenidas después.
+              Nuestro primer producto propio, <strong>Salonio</strong>, ya tiene
+              salones reservando a diario.
+            </p>
+            <ul class="tags" aria-label="Stack en NeumorStudio">
+              <li>Next.js</li>
+              <li>Supabase</li>
+              <li>Insforge</li>
+              <li>Vercel</li>
+              <li>Flutter (explorando)</li>
+            </ul>
+            <div class="tarjeta-links">
+              <a class="btn btn-flecha" href="https://www.neumorstudio.com/" target="_blank" rel="noopener">neumorstudio.com
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <a class="btn btn-flecha btn-min" href="https://reservas.neumorstudio.com" target="_blank" rel="noopener">Salonio en marcha
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Laboratorio -->
+    <section class="seccion" id="lab">
+      <div class="envoltura">
+        <p class="antetitulo reveal">Laboratorio</p>
+        <h2 class="reveal">Lo que construyo cuando nadie lo pide<span class="marca-punto">.</span></h2>
+        <p class="seccion-intro reveal">
+          Mi rama más honesta: curiosidad con GitHub, herramientas propias, algún
+          despropósito con cariño y experimentos con IA. Código abierto, en función
+          de lo que pique.
+        </p>
+        <div class="lab-grid">
+          <article class="tarjeta tarjeta-mini reveal">
+            <div class="tarjeta-cabecera">
+              <h3>Purgatio</h3>
+              <p class="tarjeta-rol">Python · GTK4</p>
+            </div>
+            <p class="tarjeta-texto">
+              Inventario y desinstalación unificada de lo que tengas en Linux:
+              APT, Snap, Flatpak, pipx, npm, Cargo, AppImages… en una app de
+              escritorio con libadwaita.
+            </p>
+            <a class="enlace-mono" href="https://github.com/cmate0s/purgatio" target="_blank" rel="noopener">github.com/cmate0s/purgatio ↗</a>
+          </article>
+
+          <article class="tarjeta tarjeta-mini reveal">
+            <div class="tarjeta-cabecera">
+              <h3>Excusa como servicio</h3>
+              <p class="tarjeta-rol">GitHub Actions</p>
+            </div>
+            <p class="tarjeta-texto">
+              Una Action que, cuando tu CI falla, comenta en tu PR una excusa a
+              medida. Humor negro incluido —el CI, no la excusa—.
+            </p>
+            <div class="tarjeta-links">
+              <a class="enlace-mono" href="https://github.com/cmate0s/excusa-como-servicio" target="_blank" rel="noopener">repo ↗</a>
+              <a class="enlace-mono" href="https://excusa-como-servicio.vercel.app" target="_blank" rel="noopener">generador de excusas ↗</a>
+            </div>
+          </article>
+
+          <article class="tarjeta tarjeta-mini reveal">
+            <div class="tarjeta-cabecera">
+              <h3>Modelito</h3>
+              <p class="tarjeta-rol">TypeScript · Android</p>
+            </div>
+            <p class="tarjeta-texto">
+              Mi app para Android, publicada en Google Play, con su web y su APK
+              en GitHub Releases para instalarse sin tienda cuando toque.
+            </p>
+            <a class="enlace-mono" href="https://github.com/cmate0s/modelito" target="_blank" rel="noopener">github.com/cmate0s/modelito ↗</a>
+          </article>
+
+          <article class="tarjeta tarjeta-mini reveal">
+            <div class="tarjeta-cabecera">
+              <h3>google-flow-skill</h3>
+              <p class="tarjeta-rol">Claude Code</p>
+            </div>
+            <p class="tarjeta-texto">
+              Skill para Claude que se sabe todos los juguetes de Google Flow —Veo,
+              Gemini, Nano Banana— y cuál tocar en cada caso.
+            </p>
+            <a class="enlace-mono" href="https://github.com/cmate0s/google-flow-skill" target="_blank" rel="noopener">github.com/cmate0s/google-flow-skill ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="seccion seccion-contacto" id="contacto">
+      <div class="envoltura">
+        <h2 class="contacto-titulo reveal">¿Hablamos?</h2>
+        <p class="contacto-sub reveal">
+          Proyectos con NeumorStudio, oportunidades, dudas o un saludo. Suelo
+          contestar rápido — salvo que esté sobre dos ruedas.
+        </p>
+        <div class="hero-botones reveal">
+          <a class="btn btn-primario" href="mailto:cmateos91@gmail.com">Escríbeme</a>
+          <a class="btn btn-flecha" href="https://github.com/cmate0s" target="_blank" rel="noopener">GitHub
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-flecha" href="https://www.linkedin.com/in/carlos-mateos-mart%C3%ADnez" target="_blank" rel="noopener">LinkedIn
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-flecha" href="https://youtube.com/@mate0s-dev91" target="_blank" rel="noopener">YouTube
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <p class="contacto-email reveal">cmateos91@gmail.com</p>
+        <p class="contacto-nota reveal">
+          ¿Tienes un negocio y pierde horas con lo manual? Ese es terreno de
+          <a href="https://www.neumorstudio.com/" target="_blank" rel="noopener">NeumorStudio</a>.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pie">
+    <div class="envoltura pie-linea">
+      <p class="pie-marca">carlos mateos<span class="marca-punto">.</span></p>
+      <p class="pie-legal">© <time id="anio">2026</time> Carlos Mateos · <a href="https://kometasoft.com/es/" target="_blank" rel="noopener">Kometasoft</a> · <a href="https://www.neumorstudio.com/" target="_blank" rel="noopener">NeumorStudio</a></p>
     </div>
-  </section>
+  </footer>
 
-  <section id="proyectos">
-    <h2>Proyectos reales</h2>
-    <div class="grid">
-      <a class="card" href="https://excusa-como-servicio.vercel.app">
-        <h3>excusa-como-servicio</h3>
-        <p>Una GitHub Action que comenta en tu PR una excusa a medida cuando falla el CI, y lo cierra como "no reproducible".</p>
-      </a>
-      <a class="card" href="https://github.com/cmate0s/excusa-como-servicio">
-        <h3>Código abierto</h3>
-        <p>Repo con la Action, 57 excusas en 8 categorías y la demo. Pull requests con más humor negro, bienvenidas.</p>
-      </a>
-      <a class="card" href="https://modelito-woad.vercel.app">
-        <h3>modelito</h3>
-        <p>Diario de outfits que recuerda qué te pusiste cuando hacía el mismo tiempo. Una PWA que hice para mi hermana: primera versión en 10 minutos, bonita en 40. Ahora también app nativa para Android.</p>
-        <span class="apk" role="button" tabindex="0" data-href="https://github.com/cmate0s/modelito/releases/latest">↓ Descargar la APK</span>
-      </a>
-      <a class="card" href="https://youtube.com/@mate0s-dev91">
-        <h3>El canal</h3>
-        <p>Cada Short sale de un proyecto real o de una mala decisión técnica. Normalmente ambas.</p>
-      </a>
-    </div>
-  </section>
-
-  <section>
-    <h2>Último incidente</h2>
-    <div class="term">
-      <div><span class="p">$</span> git push origin main</div>
-      <div><span class="e">✖ 14 tests failed</span></div>
-      <div><span class="p">bot&gt;</span> "El objeto es null porque decidió no existir. Respetamos su decisión."</div>
-      <div><span class="p">bot&gt;</span> Estado: no reproducible.</div>
-      <div><span class="p">$</span> git blame<span class="cur"></span></div>
-      <div><span class="e">✖ el culpable eres tú, de hace 3 años</span></div>
-      <div><span class="p">bot&gt;</span> Pero él ya no trabaja aquí. Caso cerrado.</div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Excusa del día</h2>
-    <div class="excusa">
-      <small id="ex-fecha">$ ./excusa --hoy</small>
-      <q id="ex-txt">Cargando una mentira convincente...</q>
-    </div>
-  </section>
-
-  <section>
-    <h2>Deuda técnica en vivo</h2>
-    <div class="deuda">
-      <small>Acumulada desde que abriste esta página</small>
-      <div class="n"><span id="dt-n">0</span> líneas de "ya lo arreglaré"</div>
-      <div class="bar"><i id="dt-b"></i></div>
-      <small id="dt-t">Todo bajo control. Mentira, pero tranquiliza.</small>
-    </div>
-  </section>
-
-  <footer>© mate0s · Sevilla · Sin garantías, sin soporte, sin remordimientos.</footer>
-</div>
-<script>
-(function(){
-  var ex=["En producción no pasa, así que no es producción.","Eso es una característica que todavía no hemos documentado.","El test es el que está mal. Lo escribí yo hace meses, no me juzgues.","Funcionaba ayer. Hoy la luna está en una fase incompatible con tu PR.","La culpa es de la caché. Siempre es de la caché. Hasta cuando no hay caché.","Lo arreglé en local. El local es un estado de ánimo.","No es un bug, es deuda técnica con vida propia.","El servidor se ha ido a buscarse a sí mismo. Volverá más maduro.","Eso lo escribió una IA. Yo solo le di a aceptar con fe.","Anoche lo vi funcionar. Fue un espejismo, lo sé."];
-  var d=new Date(), n=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);
-  document.getElementById('ex-txt').textContent=ex[n%ex.length];
-  document.getElementById('ex-fecha').textContent='$ ./excusa --hoy  # '+d.toISOString().slice(0,10);
-})();
-</script>
-<script>
-(function(){
-  var n=0,el=document.getElementById('dt-n'),b=document.getElementById('dt-b'),t=document.getElementById('dt-t');
-  var msg=[[0,"Todo bajo control. Mentira, pero tranquiliza."],[40,"Aparece un TODO que dice \"temporal\". Es de 2021."],[100,"Alguien ha copiado de Stack Overflow sin leer la respuesta."],[200,"La IA ha escrito algo y nadie sabe por qué compila."],[350,"Refactor aplazado a \"el próximo sprint\". Otra vez."],[500,"Esto ya no es deuda, es hipoteca. Y el banco eres tú."]];
-  setInterval(function(){
-    n+=Math.ceil(Math.random()*3);
-    el.textContent=n;
-    var p=Math.min(100,n/5);
-    b.style.width=p+'%';
-    b.className=p>=70?'hot':'';
-    for(var i=msg.length-1;i>=0;i--){ if(n>=msg[i][0]){ t.textContent=msg[i][1]; break; } }
-  },700);
-})();
-</script>
-<script src="anim.js"></script>
-<script src="pet.js"></script>
-<script>
-(function(){
-  // El botón APK vive dentro del enlace de la tarjeta: captura el clic (y
-  // teclado) y abre GitHub Releases sin navegar a la PWA.
-  document.querySelectorAll('.apk').forEach(function(el){
-    function go(e){ e.preventDefault(); e.stopPropagation(); window.open(el.dataset.href, '_blank', 'noopener'); }
-    el.addEventListener('click', go);
-    el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ go(e); } });
-  });
-})();
-</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Carlos Mateos",
+    "jobTitle": "Desarrollador de aplicaciones multiplataforma",
+    "description": "Técnico Superior en DAM (2023, Sevilla). Desarrollador en Kometasoft y cofundador de NeumorStudio con proyectos open source: Purgatio, Excusa como servicio, Modelito.",
+    "image": "assets/img/carlos-mateos.jpeg",
+    "knowsAbout": ["Desarrollo de software", "Aplicaciones multiplataforma", "Next.js", "Supabase", "Flutter", "PHP", "MySQL", "Agentes de IA", "Automatización"],
+    "worksFor": { "@type": "Organization", "name": "Kometasoft", "url": "https://kometasoft.com/es/" },
+    "url": "https://mate0s-web.vercel.app/",
+    "sameAs": [
+      "https://github.com/cmate0s",
+      "https://www.linkedin.com/in/carlos-mateos-mart%C3%ADnez",
+      "https://youtube.com/@mate0s-dev91"
+    ]
+  }
+  </script>
+  <script src="assets/js/lenis.min.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>

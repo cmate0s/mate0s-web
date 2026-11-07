@@ -1,0 +1,619 @@
+/* ============================================================================
+   carlos mateos · web personal (v2 — con personalidad)
+   Base: limpia y cálida, a lo Apple. Personalidad: prompt de terminal,
+   pixel-art, Space Grotesk y tonos de papel cálido + terracota.
+   Sin dependencias externas en runtime: todo autoalojado y accesible.
+   ========================================================================== */
+
+/* ---------- Tipografía display (autoalojada, variable 300–700) ---------- */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("../fonts/space-grotesk-latin-var.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Tokens de diseño ---------- */
+:root {
+  --tipo: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
+         "Helvetica Neue", Arial, sans-serif;
+  --tipo-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI",
+         Roboto, sans-serif;
+  --tipo-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas,
+         "Liberation Mono", monospace;
+
+  /* Papel cálido + terracota */
+  --fondo: #faf6f0;
+  --superficie: #fffdf8;
+  --tinta: #221d18;
+  --tinta-2: #6f685e;
+  --filete: rgba(34, 29, 24, 0.11);
+  --acento: #c65317;
+  --calido-1: #e8770d;
+  --calido-2: #ff3d63;
+  --sombra-tarjeta: 0 1px 2px rgba(34, 29, 24, 0.05), 0 16px 44px rgba(34, 29, 24, 0.09);
+  --halo: rgba(240, 184, 120, 0.5);
+
+  /* Terminal (bloque oscuro en ambos modos a propósito) */
+  --terminal: #17141f;
+  --terminal-tinta: #e8e2d6;
+  --terminal-borde: rgba(255, 255, 255, 0.09);
+
+  --radio-tarjeta: 26px;
+  --ancho: 1080px;
+  --alto-barra: 60px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #171412;
+    --superficie: #221c17;
+    --tinta: #f4eee6;
+    --tinta-2: #a89f93;
+    --filete: rgba(244, 238, 230, 0.15);
+    --acento: #f09046;
+    --calido-2: #ff5c7f;
+    --sombra-tarjeta: none;
+    --halo: rgba(240, 170, 100, 0.14);
+  }
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--tipo);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--tinta);
+  background: var(--fondo);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { margin: 0; font-weight: 700; line-height: 1.1; }
+h1, h2, h3, .marca, .btn { font-family: var(--tipo-display); }
+
+p { margin: 0; }
+ul, dl { margin: 0; padding: 0; }
+ul { list-style: none; }
+dt, dd { margin: 0; }
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+
+::selection { background: rgba(198, 83, 23, 0.25); }
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip: rect(0 0 0 0); overflow: hidden; white-space: nowrap;
+}
+
+.saltar {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 50;
+  padding: 0.65rem 1rem;
+  background: var(--tinta);
+  color: var(--fondo);
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  /* Fuera de la vista hasta recibir foco */
+  transform: translateY(-300%);
+  transition: none;
+}
+.saltar:focus { transform: none; }
+
+.envoltura {
+  max-width: var(--ancho);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2rem);
+}
+
+/* Punto cálido que atraviesa toda la marca: "carlos mateos." */
+.marca-punto { color: var(--calido-1); }
+
+/* Cursor parpadeante (guino de terminal) */
+.cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.18rem;
+  vertical-align: -0.15em;
+  background: var(--acento);
+  border-radius: 2px;
+}
+
+/* ---------- Barra de navegación ---------- */
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(250, 246, 240, 0.8); /* para navegadores sin color-mix */
+  background: color-mix(in srgb, var(--fondo) 78%, transparent);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border-bottom: 1px solid var(--filete);
+}
+
+.nav {
+  max-width: var(--ancho);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2rem);
+  min-height: var(--alto-barra);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.marca {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.nav-toggle {
+  display: none;
+  border: 0;
+  background: none;
+  color: var(--tinta);
+  padding: 0.55rem;
+  margin-right: -0.55rem;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.menu { display: flex; gap: 0.35rem; }
+
+.nav-link {
+  display: block;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--tinta-2);
+  font-size: 0.98rem;
+  transition: color 0.25s ease, background 0.25s ease;
+}
+.nav-link:hover { color: var(--tinta); }
+
+@media (max-width: 719px) {
+  .nav-toggle { display: inline-flex; align-items: center; }
+
+  .menu {
+    position: absolute;
+    inset: var(--alto-barra) 0 auto;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.9rem 1.25rem 1.25rem;
+    background: rgba(250, 246, 240, 0.86);
+    background: color-mix(in srgb, var(--fondo) 88%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--filete);
+  }
+  .menu[hidden] { display: none; }
+  .nav-link { padding: 0.7rem 0.85rem; font-size: 1.05rem; }
+}
+
+/* ---------- Portada ---------- */
+.hero { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.25rem, 5vw, 3.5rem); }
+
+.hero-grid { display: grid; gap: 2.25rem; align-items: center; }
+
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: 1.08fr 0.92fr; gap: 3.5rem; }
+}
+
+.mango {
+  font-family: var(--tipo-mono);
+  font-size: 0.95rem;
+  color: var(--tinta-2);
+}
+.mango-prompt { color: var(--acento); }
+
+.hero h1 {
+  margin-top: 0.55rem;
+  font-size: clamp(3.05rem, 8.5vw, 6.4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+.hero-sub {
+  margin-top: 1.15rem;
+  max-width: 48ch;
+  font-size: clamp(1.05rem, 1.9vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--tinta-2);
+}
+.hero-sub strong { color: var(--tinta); font-weight: 640; }
+
+.hero-botones {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.35rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  font-size: 1.03rem;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+}
+
+.btn-primario {
+  padding: 0.85rem 1.65rem;
+  border-radius: 999px;
+  background: var(--tinta);
+  color: var(--fondo);
+}
+
+.btn-flecha { color: var(--acento); padding: 0.4rem 0.1rem; }
+.btn-min { font-size: 0.95rem; }
+
+.tarjeta-links {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 1.25rem;
+}
+.tarjeta .btn-flecha { padding-inline: 0; }
+
+/* La foto: polaroid levemente girada */
+.hero-foto {
+  position: relative;
+  width: min(380px, 100%);
+  margin-inline: auto;
+  justify-self: center;
+}
+.hero-foto::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--halo), transparent 100%);
+}
+.foto-principal {
+  position: relative;
+  width: 100%;
+  border-radius: clamp(22px, 6vw, 30px);
+  box-shadow: 0 2px 4px rgba(34, 29, 24, 0.07), 0 30px 60px rgba(34, 29, 24, 0.16);
+}
+
+/* ---------- Secciones ---------- */
+.seccion {
+  padding-block: clamp(3.6rem, 8vw, 6.4rem);
+  border-top: 1px solid var(--filete);
+  scroll-margin-top: calc(var(--alto-barra) + 8px);
+}
+
+.antetitulo {
+  font-size: 0.92rem;
+  font-weight: 650;
+  font-family: var(--tipo-mono);
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--acento);
+  margin-bottom: 0.9rem;
+}
+
+.seccion h2 {
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  letter-spacing: -0.022em;
+  max-width: 26ch;
+}
+
+.seccion-texto {
+  margin-top: 1.4rem;
+  max-width: 62ch;
+  display: grid;
+  gap: 1rem;
+  color: var(--tinta-2);
+}
+
+.seccion-intro {
+  margin-top: 1rem;
+  max-width: 58ch;
+  color: var(--tinta-2);
+}
+
+.seccion-texto strong, .tarjeta-texto strong, .hero-sub strong { color: var(--tinta); }
+
+/* ---------- Terminal "ahora" ---------- */
+.terminal {
+  max-width: 720px;
+  margin-inline: auto;
+  background: var(--terminal);
+  color: var(--terminal-tinta);
+  border: 1px solid var(--terminal-borde);
+  border-radius: 22px;
+  padding: 1.05rem 1.3rem 1.25rem;
+  font-family: var(--tipo-mono);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  box-shadow: 0 24px 60px rgba(23, 20, 31, 0.3);
+}
+
+.terminal-barra {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.9rem;
+}
+.terminal-barra span {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.terminal-linea { color: #fff; }
+.terminal-prompt { color: var(--calido-1); }
+
+.terminal-cuerpo {
+  margin-top: 0.95rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.terminal-fila {
+  display: grid;
+  grid-template-columns: 13ch 1fr;
+  gap: 1rem;
+}
+.terminal-fila dt { color: var(--calido-1); }
+.terminal-fila dd { overflow-wrap: anywhere; }
+
+.terminal-pie {
+  margin-top: 1.1rem;
+  font-size: 0.84rem;
+  opacity: 0.6;
+}
+
+@media (max-width: 559px) {
+  .terminal-fila { grid-template-columns: 1fr; gap: 0.1rem; }
+  .terminal { font-size: 0.9rem; }
+}
+
+/* ---------- Chips (también aficiones) ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--filete);
+  border-radius: 999px;
+  background: var(--superficie);
+  box-shadow: var(--sombra-tarjeta);
+  font-size: 0.92rem;
+  color: var(--tinta-2);
+}
+
+.aficiones { margin-top: 2.1rem; }
+.aficiones h3 {
+  font-size: 0.98rem;
+  font-weight: 650;
+  margin-bottom: 0.75rem;
+  color: var(--tinta);
+}
+.aficiones .chips { justify-content: flex-start; }
+
+/* ---------- Tarjetas ---------- */
+.tarjetas {
+  margin-top: 2.4rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.tarjeta {
+  background: var(--superficie);
+  border: 1px solid var(--filete);
+  border-radius: var(--radio-tarjeta);
+  padding: clamp(1.5rem, 3.4vw, 2.3rem);
+  box-shadow: var(--sombra-tarjeta);
+}
+
+.tarjeta h3 { font-size: 1.32rem; letter-spacing: -0.015em; }
+.tarjeta-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+}
+.tarjeta-rol {
+  color: var(--tinta-2);
+  font-size: 0.9rem;
+  font-family: var(--tipo-mono);
+}
+
+.tarjeta-texto {
+  margin-top: 0.9rem;
+  color: var(--tinta-2);
+  max-width: 58ch;
+}
+
+.tags {
+  margin-top: 1.15rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.tags li {
+  padding: 0.3rem 0.72rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--acento) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--acento) 16%, transparent);
+  font-family: var(--tipo-mono);
+  font-size: 0.8rem;
+  color: var(--acento);
+}
+
+/* ---------- Laboratorio ---------- */
+.lab-grid {
+  margin-top: 2.3rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.tarjeta-mini .tarjeta-rol { font-size: 0.82rem; }
+.tarjeta-mini .tarjeta-texto { font-size: 0.98rem; }
+
+.enlace-mono {
+  display: inline-flex;
+  font-family: var(--tipo-mono);
+  font-size: 0.88rem;
+  color: var(--acento);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  margin: 0;
+}
+.enlace-mono:hover { text-decoration: underline; }
+.tarjeta-mini .enlace-mono { margin-top: 1.1rem; }
+.tarjeta-mini .tarjeta-links { margin-top: 0; }
+
+/* ---------- Contacto ---------- */
+.seccion-contacto { text-align: center; }
+.seccion-contacto .envoltura { max-width: 680px; }
+
+.contacto-titulo {
+  font-size: clamp(2.5rem, 5.5vw, 3.9rem);
+  letter-spacing: -0.025em;
+  background: linear-gradient(100deg, var(--calido-1), var(--calido-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.contacto-sub {
+  margin-top: 0.95rem;
+  color: var(--tinta-2);
+  font-size: clamp(1.02rem, 2vw, 1.22rem);
+  letter-spacing: -0.01em;
+}
+
+.seccion-contacto .hero-botones { margin-top: 2rem; justify-content: center; }
+
+.contacto-email {
+  margin-top: 1.5rem;
+  font-family: var(--tipo-mono);
+  font-size: 0.92rem;
+  color: var(--tinta-2);
+}
+
+.contacto-nota {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--tinta-2);
+}
+.contacto-nota a {
+  color: var(--acento);
+  font-weight: 620;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--acento) 45%, transparent);
+  text-underline-offset: 3px;
+}
+
+/* ---------- Pie ---------- */
+.pie {
+  border-top: 1px solid var(--filete);
+  padding-block: 2.4rem;
+}
+.pie-linea {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 2rem;
+}
+.pie-marca { font-weight: 700; letter-spacing: -0.01em; }
+.pie-legal { color: var(--tinta-2); font-size: 0.9rem; }
+.pie-legal a { color: var(--tinta-2); text-underline-offset: 3px; }
+.pie-legal a:hover { color: var(--tinta); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 767px) {
+  .tarjetas, .lab-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Movimiento ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  html.lenis { scroll-behavior: auto; } /* lo gestiona Lenis */
+
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  /* Botones que responden: pequeño "hundido" al pulsar */
+  .btn { transition: transform 0.18s ease, background 0.2s ease, color 0.2s ease; }
+  .btn:active { transform: translateY(1px) scale(0.99); }
+  .btn-primario:hover { transform: translateY(-1px); }
+  .btn-flecha svg { transition: transform 0.2s ease; }
+  .btn-flecha:hover svg { transform: translateX(2px); }
+
+  .tarjeta { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+  .tarjeta:hover { transform: translateY(-3px); }
+
+  .foto-principal { transition: transform 0.35s ease; }
+  .hero-foto:hover .foto-principal { transform: rotate(0deg) scale(1.01); }
+  .foto-principal { transform: rotate(-2deg); }
+
+  .cursor { animation: parpadeo 1.15s steps(2, start) infinite; }
+  @keyframes parpadeo {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .btn, .tarjeta, .btn-flecha svg, .foto-principal { transition: none; }
+  .cursor { animation: none; }
+}
+
+/* Consola: letras que huyen del ratón (ver main.js) */
+.huir-palabra { display: inline-block; white-space: nowrap; }
+.huir-letra { display: inline-block; will-change: transform; }
+
+/* Consola: sin selección de texto y con la flecha normal */
+.terminal {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* Sin barra de scroll visible (la página sigue haciendo scroll) */
+html { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+
+/* Arrastrar para desplazarse */
+html.arrastrando, html.arrastrando * { cursor: grabbing !important; user-select: none !important; }
+img { -webkit-user-drag: none; }
